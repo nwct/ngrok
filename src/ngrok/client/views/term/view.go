@@ -61,7 +61,7 @@ func (v *TermView) draw() {
 	v.Clear()
 
 	// quit instructions
-	quitMsg := "(Ctrl+C to quit)"
+	quitMsg := "(Ctrl+C 退出)"
 	v.Printf(v.w-len(quitMsg), 0, quitMsg)
 
 	// new version message
