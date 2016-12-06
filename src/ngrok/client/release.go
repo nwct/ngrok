@@ -7,5 +7,5 @@ var (
 )
 
 func useInsecureSkipVerify() bool {
-	return false
+	return true
 }
