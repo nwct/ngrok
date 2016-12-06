@@ -46,13 +46,13 @@ func NewTermView(ctl mvc.Controller) *TermView {
 func connStatusRepr(status mvc.ConnStatus) (string, termbox.Attribute) {
 	switch status {
 	case mvc.ConnConnecting:
-		return "connecting", termbox.ColorCyan
+		return "正在连接", termbox.ColorCyan
 	case mvc.ConnReconnecting:
-		return "reconnecting", termbox.ColorRed
+		return "正在重连", termbox.ColorRed
 	case mvc.ConnOnline:
-		return "online", termbox.ColorGreen
+		return "在线", termbox.ColorGreen
 	}
-	return "unknown", termbox.ColorWhite
+	return "未知", termbox.ColorWhite
 }
 
 func (v *TermView) draw() {
