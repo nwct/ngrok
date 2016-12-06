@@ -67,7 +67,7 @@ func (v *HttpView) Run() {
 
 func (v *HttpView) Render() {
 	v.Clear()
-	v.Printf(0, 0, "HTTP Requests")
+	v.Printf(0, 0, "网页请求")
 	v.Printf(0, 1, "-------------")
 	for i, obj := range v.HttpRequests.Slice() {
 		txn := obj.(*proto.HttpTxn)
