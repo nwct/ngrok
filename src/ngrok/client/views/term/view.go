@@ -62,7 +62,7 @@ func (v *TermView) draw() {
 
 	// quit instructions
 	quitMsg := "Ctrl+C 退出   "
-	v.Printf(v.w-len(quitMsg), 0, quitMsg)
+	v.Printf(v.w-len(quitMsg), 1, quitMsg)
 
 	// new version message
 	updateStatus := state.GetUpdateStatus()
@@ -98,23 +98,23 @@ func (v *TermView) draw() {
 	}
 	
 
-	v.APrintf(termbox.ColorBlue|termbox.AttrBold, 0, 0, " ☆夢幻煋涳☆   QQ：372763861")
+	v.APrintf(termbox.ColorBlue|termbox.AttrBold, 0, 1, " ☆夢幻煋涳☆  QQ：372763861")
 	statusStr, statusColor := connStatusRepr(state.GetConnStatus())
-	v.APrintf(statusColor, 0, 2, "%-30s%s", "隧道状态", statusStr)
+	v.APrintf(statusColor, 0, 3, "%-15s%s", "隧道状态", statusStr)
 
-	v.Printf(0, 3, "%-30s%s/%s", "版本信息", state.GetClientVersion(), state.GetServerVersion())
-	var i int = 4
+	v.Printf(0, 4, "%-15s%s/%s", "版本信息", state.GetClientVersion(), state.GetServerVersion())
+	var i int = 5
 	for _, t := range state.GetTunnels() {
-		v.Printf(0, i, "%-30s%s -> %s", "转发详情", t.PublicUrl, t.LocalAddr)
+		v.Printf(0, i, "%-15s%s -> %s", "转发详情", t.PublicUrl, t.LocalAddr)
 		i++
 	}
-	v.Printf(0, i+0, "%-30s%s", "状态界面", v.ctl.GetWebInspectAddr())
+	v.Printf(0, i+0, "%-15s%s", "状态界面", v.ctl.GetWebInspectAddr())
 
 	connMeter, connTimer := state.GetConnectionMetrics()
-	v.Printf(0, i+1, "%-30s%d", "连接次数", connMeter.Count())
+	v.Printf(0, i+1, "%-15s%d", "连接次数", connMeter.Count())
 
 	msec := float64(time.Millisecond)
-	v.Printf(0, i+2, "%-30s%.2fms", "平均时间", connTimer.Mean()/msec)
+	v.Printf(0, i+2, "%-15s%.2fms", "平均时间", connTimer.Mean()/msec)
 
 	termbox.Flush()
 }
