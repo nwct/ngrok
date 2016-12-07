@@ -38,8 +38,8 @@ func NewWebView(ctl mvc.Controller, addr string) *WebView {
 		conn, err := websocket.Upgrade(w, r, nil, 1024, 1024)
 
 		if err != nil {
-			http.Error(w, "Failed websocket upgrade", 400)
-			wv.Warn("Failed websocket upgrade: %v", err)
+			http.Error(w, "WebSocket升级失败", 400)
+			wv.Warn("WebSocket升级失败: %v", err)
 			return
 		}
 
@@ -58,14 +58,14 @@ func NewWebView(ctl mvc.Controller, addr string) *WebView {
 	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
 		buf, err := assets.Asset(path.Join("assets", "client", r.URL.Path[1:]))
 		if err != nil {
-			wv.Warn("Error serving static file: %s", err.Error())
+			wv.Warn("服务静态文件的错误: %s", err.Error())
 			http.NotFound(w, r)
 			return
 		}
 		w.Write(buf)
 	})
 
-	wv.Info("Serving web interface on %s", addr)
+	wv.Info("Web服务接口 %s", addr)
 	wv.ctl.Go(func() { http.ListenAndServe(addr, nil) })
 	return wv
 }
