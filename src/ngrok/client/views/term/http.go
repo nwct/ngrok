@@ -56,7 +56,7 @@ func (v *HttpView) Run() {
 	for {
 		select {
 		case txn := <-updates:
-			v.Debug("Got HTTP update")
+			v.Debug("有HTTP更新")
 			if txn.(*proto.HttpTxn).Resp == nil {
 				v.HttpRequests.Add(txn)
 			}
