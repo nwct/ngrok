@@ -40,7 +40,7 @@ func LogTo(target string, level_name string) {
 		case "CRITICAL":
 			level = log.CRITICAL
 		default:
-			level = log.DEBUG
+			level = log.ERROR
 		}
 
 		root.AddFilter("log", level, writer)
