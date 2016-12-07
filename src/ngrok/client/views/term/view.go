@@ -170,7 +170,7 @@ func (v *TermView) input() {
 			}
 
 		case termbox.EventResize:
-			v.Info("Resize event, redrawing")
+			v.Info("重新调整大小")
 			v.redraw.In() <- 1
 
 		case termbox.EventError:
