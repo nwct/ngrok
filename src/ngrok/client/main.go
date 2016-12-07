@@ -14,8 +14,8 @@ import (
 func init() {
 	if runtime.GOOS == "windows" {
 		if mousetrap.StartedByExplorer() {
-			fmt.Println("Don't double-click ngrok!")
-			fmt.Println("You need to open cmd.exe and run it from the command line!")
+			fmt.Println("请不要直接双击运行ngrok!")
+			fmt.Println("你需要打开cmd.exe并从命令行中运行!")
 			time.Sleep(5 * time.Second)
 			os.Exit(1)
 		}
