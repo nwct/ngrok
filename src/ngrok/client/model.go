@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	defaultServerAddr   = "ngrokd.ngrok.com:443"
+	defaultServerAddr   = "ngrokd.chengang.win:4443"
 	defaultInspectAddr  = "127.0.0.1:4040"
 	pingInterval        = 20 * time.Second
 	maxPongLatency      = 15 * time.Second
@@ -29,8 +29,8 @@ const (
 	BadGateway          = `<html>
 <body style="background-color: #97a8b9">
     <div style="margin:auto; width:400px;padding: 20px 60px; background-color: #D3D3D3; border: 5px solid maroon;">
-        <h2>Tunnel %s unavailable</h2>
-        <p>Unable to initiate connection to <strong>%s</strong>. A web server must be running on port <strong>%s</strong> to complete the tunnel.</p>
+        <h2>隧道 %s 不可用</h2>
+        <p>无法启动连接到 <strong>%s</strong>.一个Web服务器必须运行在端口 <strong>%s</strong> 才能完成隧道.</p>
 `
 )
 
@@ -106,7 +106,7 @@ func newClientModel(config *Configuration, ctl mvc.Controller) *ClientModel {
 		m.Info("Trusting host's root certificates")
 		m.tlsConfig = &tls.Config{}
 	} else {
-		m.Info("Trusting root CAs: %v", rootCrtPaths)
+		m.Info("信任的根CA: %v", rootCrtPaths)
 		var err error
 		if m.tlsConfig, err = LoadTLSConfig(rootCrtPaths); err != nil {
 			panic(err)
@@ -198,7 +198,7 @@ func (c *ClientModel) Run() {
 			wait = 1 * time.Second
 		}
 
-		log.Info("Waiting %d seconds before reconnecting", int(wait.Seconds()))
+		log.Info("等待 %d 秒后重新连接", int(wait.Seconds()))
 		time.Sleep(wait)
 		// exponentially increase wait time
 		wait = 2 * wait
@@ -212,7 +212,7 @@ func (c *ClientModel) Run() {
 func (c *ClientModel) control() {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Error("control recovering from failure %v", r)
+			log.Error("控制恢复从故障 %v", r)
 		}
 	}()
 
@@ -253,17 +253,17 @@ func (c *ClientModel) control() {
 	}
 
 	if authResp.Error != "" {
-		emsg := fmt.Sprintf("Failed to authenticate to server: %s", authResp.Error)
+		emsg := fmt.Sprintf("无法进行身份验证对服务器: %s", authResp.Error)
 		c.ctl.Shutdown(emsg)
 		return
 	}
 
 	c.id = authResp.ClientId
 	c.serverVersion = authResp.MmVersion
-	c.Info("Authenticated with server, client id: %v", c.id)
+	c.Info("通过服务器进行身份验证，客户端ID: %v", c.id)
 	c.update()
 	if err = SaveAuthToken(c.configPath, c.authToken); err != nil {
-		c.Error("Failed to save auth token: %v", err)
+		c.Error("未能保存认证令牌: %v", err)
 	}
 
 	// request tunnels
@@ -314,7 +314,7 @@ func (c *ClientModel) control() {
 
 		case *msg.NewTunnel:
 			if m.Error != "" {
-				emsg := fmt.Sprintf("Server failed to allocate tunnel: %s", m.Error)
+				emsg := fmt.Sprintf("服务器无法分配隧道: %s", m.Error)
 				c.Error(emsg)
 				c.ctl.Shutdown(emsg)
 				continue
@@ -328,11 +328,11 @@ func (c *ClientModel) control() {
 
 			c.tunnels[tunnel.PublicUrl] = tunnel
 			c.connStatus = mvc.ConnOnline
-			c.Info("Tunnel established at %v", tunnel.PublicUrl)
+			c.Info("建立隧道 %v", tunnel.PublicUrl)
 			c.update()
 
 		default:
-			ctlConn.Warn("Ignoring unknown control message %v ", m)
+			ctlConn.Warn("忽略未知控制消息 %v ", m)
 		}
 	}
 }
@@ -351,7 +351,7 @@ func (c *ClientModel) proxy() {
 	}
 
 	if err != nil {
-		log.Error("Failed to establish proxy connection: %v", err)
+		log.Error("未能建立代理连接: %v", err)
 		return
 	}
 	defer remoteConn.Close()
