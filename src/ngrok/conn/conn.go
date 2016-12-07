@@ -68,7 +68,7 @@ func Listen(addr, typ string, tlsCfg *tls.Config) (l *Listener, err error) {
 		for {
 			rawConn, err := listener.Accept()
 			if err != nil {
-				log.Error("Failed to accept new TCP connection of type %s: %v", typ, err)
+				log.Error("不能接受新的TCP连接类型 %s: %v", typ, err)
 				continue
 			}
 
@@ -76,7 +76,7 @@ func Listen(addr, typ string, tlsCfg *tls.Config) (l *Listener, err error) {
 			if tlsCfg != nil {
 				c.Conn = tls.Server(c.Conn, tlsCfg)
 			}
-			c.Info("New connection from %v", c.RemoteAddr())
+			c.Info("新的连接 %v", c.RemoteAddr())
 			l.Conns <- c
 		}
 	}()
@@ -94,7 +94,7 @@ func Dial(addr, typ string, tlsCfg *tls.Config) (conn *loggedConn, err error) {
 	}
 
 	conn = wrapConn(rawConn, typ)
-	conn.Debug("New connection to: %v", rawConn.RemoteAddr())
+	conn.Debug("新的连接: %v", rawConn.RemoteAddr())
 
 	if tlsCfg != nil {
 		conn.StartTLS(tlsCfg)
