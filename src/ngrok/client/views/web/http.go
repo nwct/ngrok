@@ -156,7 +156,7 @@ func (whv *WebHttpView) updateHttp() {
 		if htxn.UserCtx == nil {
 			rawReq, err := proto.DumpRequestOut(htxn.Req.Request, true)
 			if err != nil {
-				whv.Error("Failed to dump request: %v", err)
+				whv.Error("转储请求失败: %v", err)
 				continue
 			}
 
@@ -184,7 +184,7 @@ func (whv *WebHttpView) updateHttp() {
 		} else {
 			rawResp, err := httputil.DumpResponse(htxn.Resp.Response, true)
 			if err != nil {
-				whv.Error("Failed to dump response: %v", err)
+				whv.Error("转储响应失败: %v", err)
 				continue
 			}
 
@@ -201,7 +201,7 @@ func (whv *WebHttpView) updateHttp() {
 
 			payload, err := json.Marshal(txn)
 			if err != nil {
-				whv.Error("Failed to serialized txn payload for websocket: %v", err)
+				whv.Error("未能序列化以及有效载荷的WebSocket: %v", err)
 			}
 			whv.webview.wsMessages.In() <- payload
 		}
@@ -213,7 +213,7 @@ func (whv *WebHttpView) register() {
 		defer func() {
 			if r := recover(); r != nil {
 				err := util.MakePanicTrace(r)
-				whv.Error("Replay failed: %v", err)
+				whv.Error("重试失败: %v", err)
 				http.Error(w, err, 500)
 			}
 		}()
@@ -236,7 +236,7 @@ func (whv *WebHttpView) register() {
 		defer func() {
 			if r := recover(); r != nil {
 				err := util.MakePanicTrace(r)
-				whv.Error("HTTP web view failed: %v", err)
+				whv.Error("HTTP Web视图失败: %v", err)
 				http.Error(w, err, 500)
 			}
 		}()
