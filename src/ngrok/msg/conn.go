@@ -8,25 +8,25 @@ import (
 )
 
 func readMsgShared(c conn.Conn) (buffer []byte, err error) {
-	c.Debug("Waiting to read message")
+	c.Debug("等待读取消息")
 
 	var sz int64
 	err = binary.Read(c, binary.LittleEndian, &sz)
 	if err != nil {
 		return
 	}
-	c.Debug("Reading message with length: %d", sz)
+	c.Debug("读取消息长度: %d", sz)
 
 	buffer = make([]byte, sz)
 	n, err := c.Read(buffer)
-	c.Debug("Read message %s", buffer)
+	c.Debug("读取消息 %s", buffer)
 
 	if err != nil {
 		return
 	}
 
 	if int64(n) != sz {
-		err = errors.New(fmt.Sprintf("Expected to read %d bytes, but only read %d", sz, n))
+		err = errors.New(fmt.Sprintf("预期要读取 %d bytes, 但只读取 %d", sz, n))
 		return
 	}
 
@@ -56,7 +56,7 @@ func WriteMsg(c conn.Conn, msg interface{}) (err error) {
 		return
 	}
 
-	c.Debug("Writing message: %s", string(buffer))
+	c.Debug("写消息: %s", string(buffer))
 	err = binary.Write(c, binary.LittleEndian, int64(len(buffer)))
 
 	if err != nil {
