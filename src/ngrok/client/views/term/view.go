@@ -71,11 +71,11 @@ func (v *TermView) draw() {
 	case mvc.UpdateNone:
 		updateMsg = ""
 	case mvc.UpdateInstalling:
-		updateMsg = "ngrok is updating"
+		updateMsg = "ngrok正在更新"
 	case mvc.UpdateReady:
-		updateMsg = "ngrok has updated: restart ngrok for the new version"
+		updateMsg = "ngrok已经更新，请重启新版本ngrok"
 	case mvc.UpdateAvailable:
-		updateMsg = "new version available at https://ngrok.com"
+		updateMsg = "新版本在 http://ngrok.chengang.win"
 	default:
 		pct := float64(updateStatus) / 100.0
 		const barLength = 25
@@ -90,7 +90,7 @@ func (v *TermView) draw() {
 				bar[i+1] = ' '
 			}
 		}
-		updateMsg = "Downloading update: " + string(bar)
+		updateMsg = "正在下载更新: " + string(bar)
 	}
 
 	if updateMsg != "" {
@@ -128,7 +128,7 @@ func (v *TermView) run() {
 
 	v.draw()
 	for {
-		v.Debug("Waiting for update")
+		v.Debug("等待更新")
 		select {
 		case <-v.flush:
 			termbox.Flush()
@@ -165,7 +165,7 @@ func (v *TermView) input() {
 		case termbox.EventKey:
 			switch ev.Key {
 			case termbox.KeyCtrlC:
-				v.Info("Got quit command")
+				v.Info("有退出命令")
 				v.ctl.Shutdown("")
 			}
 
