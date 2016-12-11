@@ -22,7 +22,7 @@ Authorization required
 	NotFound = `HTTP/1.0 404 Not Found
 Content-Length: %d
 
-Tunnel %s not found
+隧道 %s 没有找到
 `
 
 	BadRequest = `HTTP/1.0 400 Bad Request
@@ -45,7 +45,7 @@ func startHttpListener(addr string, tlsCfg *tls.Config) (listener *conn.Listener
 		proto = "https"
 	}
 
-	log.Info("Listening for public %s connections on %v", proto, listener.Addr.String())
+	log.Info("监听公共 %s 连接 %v", proto, listener.Addr.String())
 	go func() {
 		for conn := range listener.Conns {
 			go httpHandler(conn, proto)
