@@ -96,7 +96,6 @@ func (v *TermView) draw() {
 	if updateMsg != "" {
 		v.APrintf(termbox.ColorYellow, 30, 0, updateMsg)
 	}
-	
 
 	v.APrintf(termbox.ColorBlue|termbox.AttrBold, 0, 1, " ☆夢幻煋涳☆  QQ：372763861")
 	statusStr, statusColor := connStatusRepr(state.GetConnStatus())
