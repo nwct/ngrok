@@ -42,7 +42,7 @@
                     <div class="container">
                         <a class="brand" href="#">ngrok</a>
                         <ul class="nav">
-                            <li class="active"><a href="#">Inbound Requests</a></li>
+                            <li class="active"><a href="#">入站请求</a></li>
                             <!--
                             <li><a href="#">Outbound Requests</a></li>
                             <li><a href="#">Configuration</a></li>
@@ -54,9 +54,9 @@
             <div ng-show="txns.length==0" class="row">
                 <div class="span6 offset3">
                     <div class="well" style="padding: 20px 50px;">
-                        <h4>No requests to display yet</h4>
+                        <h4>没有要显示的要求</h4>
 			<hr />
-                        <h5>To get started, make a request to one of your tunnel URLs:</h5>
+                        <h5>要开始使用，请向您的某个隧道网址发出请求:</h5>
                             <ul>
                                 <li ng-repeat="t in tunnels"><p class="lead"><a target="_blank" href="{{ t.PublicUrl }}">{{ t.PublicUrl }}</a></p></li>
                             </ul>
@@ -66,7 +66,7 @@
             </div>
             <div ng-show="txns.length>0" class="row">
                 <div class="span6">
-                    <h4>All Requests</h4>
+                    <h4>所有请求</h4>
                     <table class="table txn-selector">
                         <tr ng-controller="TxnNavItem" ng-class="{'selected':isActive()}" ng-repeat="txn in txns" ng-click="makeActive()">
                             <td class="wrapped"><div class="path">{{ txn.Req.MethodPath }}</div></td>
