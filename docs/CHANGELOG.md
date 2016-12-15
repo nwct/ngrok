@@ -1,4 +1,7 @@
 # Changelog
+## 1.8 - 12/15/2016
+- 汉化并取消了客户端的连接局限
+
 ## 1.7 - 6/6/2014
 - IMPROVEMENT: Print a better help message when run without any arguments
 - IMPROVEMENT: Display useful help message and instructions when double-clicked from explorer on Windows
