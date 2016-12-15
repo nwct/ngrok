@@ -51,7 +51,7 @@ func NewTunnelRegistry(cacheSize uint64, cacheFile string) *TunnelRegistry {
 
 		registry.SaveCacheThread(cacheFile, cacheSaveInterval)
 	} else {
-		registry.Info("No affinity cache specified")
+		registry.Info("未指定关联缓存")
 	}
 
 	return registry
@@ -82,7 +82,7 @@ func (r *TunnelRegistry) Register(url string, t *Tunnel) error {
 	defer r.Unlock()
 
 	if r.tunnels[url] != nil {
-		return fmt.Errorf("The tunnel %s is already registered.", url)
+		return fmt.Errorf("隧道 %s 已注册.", url)
 	}
 
 	r.tunnels[url] = t
@@ -190,7 +190,7 @@ func (r *ControlRegistry) Add(clientId string, ctl *Control) (oldCtl *Control) {
 	}
 
 	r.controls[clientId] = ctl
-	r.Info("Registered control with id %s", clientId)
+	r.Info("注册控制id %s", clientId)
 	return
 }
 

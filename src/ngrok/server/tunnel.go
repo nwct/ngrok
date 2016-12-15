@@ -59,7 +59,7 @@ func registerVhost(t *Tunnel, protocol string, servingPort int) (err error) {
 	// Canonicalize virtual host by removing default port (e.g. :80 on HTTP)
 	defaultPort, ok := defaultPortMap[protocol]
 	if !ok {
-		return fmt.Errorf("Couldn't find default port for protocol %s", protocol)
+		return fmt.Errorf("无法找到协议的默认端口 %s", protocol)
 	}
 
 	defaultPortSuffix := fmt.Sprintf(":%d", defaultPort)
@@ -120,7 +120,7 @@ func NewTunnel(m *msg.ReqTunnel, ctl *Control) (t *Tunnel, err error) {
 				// This should never be possible because the OS will
 				// only assign available ports to us.
 				t.listener.Close()
-				err = fmt.Errorf("TCP listener bound, but failed to register %s", t.url)
+				err = fmt.Errorf("TCP侦听绑定，但未能注册 %s", t.url)
 				return err
 			}
 
@@ -146,7 +146,7 @@ func NewTunnel(m *msg.ReqTunnel, ctl *Control) (t *Tunnel, err error) {
 			} else {
 				// we have a valid, cached port, let's try to bind with it
 				if bindTcp(port) != nil {
-					t.ctl.conn.Warn("Failed to get custom port %d: %v, trying a random one", port, err)
+					t.ctl.conn.Warn("无法获取自定义端口 %d: %v, 尝试一个随机的", port, err)
 				} else {
 					// success, we're done
 					return
@@ -180,7 +180,7 @@ func NewTunnel(m *msg.ReqTunnel, ctl *Control) (t *Tunnel, err error) {
 	}
 
 	t.AddLogPrefix(t.Id())
-	t.Info("Registered new tunnel on: %s", t.ctl.conn.Id())
+	t.Info("注册新的隧道: %s", t.ctl.conn.Id())
 
 	metrics.OpenTunnel(t)
 	return

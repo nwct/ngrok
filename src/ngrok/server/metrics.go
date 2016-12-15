@@ -126,7 +126,7 @@ func (m *LocalMetrics) CloseConnection(t *Tunnel, c conn.Conn, start time.Time, 
 }
 
 func (m *LocalMetrics) Report() {
-	m.Info("Reporting every %d seconds", int(m.reportInterval.Seconds()))
+	m.Info("每 %d 秒报告一次", int(m.reportInterval.Seconds()))
 
 	for {
 		time.Sleep(m.reportInterval)
@@ -146,11 +146,11 @@ func (m *LocalMetrics) Report() {
 		})
 
 		if err != nil {
-			m.Error("Failed to serialize metrics: %v", err)
+			m.Error("无法序列化指标: %v", err)
 			continue
 		}
 
-		m.Info("Reporting: %s", buffer)
+		m.Info("报告: %s", buffer)
 	}
 }
 
@@ -169,7 +169,7 @@ type KeenIoMetrics struct {
 
 func NewKeenIoMetrics(batchInterval time.Duration) *KeenIoMetrics {
 	k := &KeenIoMetrics{
-		Logger:       log.NewPrefixLogger("metrics"),
+		Logger:       log.NewPrefixLogger("指标"),
 		ApiKey:       os.Getenv("KEEN_API_KEY"),
 		ProjectToken: os.Getenv("KEEN_PROJECT_TOKEN"),
 		Metrics:      make(chan *KeenIoMetric, 1000),
@@ -202,7 +202,7 @@ func NewKeenIoMetrics(batchInterval time.Duration) *KeenIoMetrics {
 
 				payload, err := json.Marshal(batch)
 				if err != nil {
-					k.Error("Failed to serialize metrics payload: %v, %v", batch, err)
+					k.Error("无法序列化指标有效内容: %v, %v", batch, err)
 				} else {
 					for key, val := range batch {
 						k.Debug("Reporting %d metrics for %s", len(val), key)

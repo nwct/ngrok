@@ -131,7 +131,7 @@ func (c *Control) registerTunnel(rawTunnelReq *msg.ReqTunnel) {
 		tunnelReq := *rawTunnelReq
 		tunnelReq.Protocol = proto
 
-		c.conn.Debug("Registering new tunnel")
+		c.conn.Debug("注册新隧道")
 		t, err := NewTunnel(&tunnelReq, c)
 		if err != nil {
 			c.out <- &msg.NewTunnel{Error: err.Error()}
