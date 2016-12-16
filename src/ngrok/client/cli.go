@@ -67,7 +67,7 @@ func ParseArgs() (opts *Options, err error) {
 
 	loglevel := flag.String(
 		"log-level",
-		"DEBUG",
+		"ERROR",
 		"The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR")
 
 	authtoken := flag.String(
