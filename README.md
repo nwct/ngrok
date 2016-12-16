@@ -4,7 +4,7 @@
 
 客户端为：ngrok</br>
 启动方式1：ngrok.exe 80</br>
-启动方式2：ngrok.exe -log-level=error -config ngrok.cfg start-all</br></br>
+启动方式2：ngrok.exe  start-all</br></br>
 服务端为：ngrokd</br>
 启动方式：ngrokd.exe -domain="gdmpmiu.tk" -httpAddr=":80" -httpsAddr=":443" -tunnelAddr=":4443"</br></br>
 以上启动命令均是在cmd模式下运行。</br></br>
