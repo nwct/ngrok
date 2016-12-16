@@ -1,4 +1,4 @@
-package client
+﻿package client
 
 import (
 	"fmt"
@@ -40,13 +40,13 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 		configPath = defaultPath()
 	}
 
-	log.Info("Reading configuration file %s", configPath)
+	log.Info("读取配置文件 %s", configPath)
 	configBuf, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		// failure to read a configuration file is only a fatal error if
 		// the user specified one explicitly
 		if opts.config != "" {
-			err = fmt.Errorf("Failed to read configuration file %s: %v", configPath, err)
+			err = fmt.Errorf("无法读取配置文件 %s: %v", configPath, err)
 			return
 		}
 	}
@@ -54,7 +54,7 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 	// deserialize/parse the config
 	config = new(Configuration)
 	if err = yaml.Unmarshal(configBuf, &config); err != nil {
-		err = fmt.Errorf("Error parsing configuration file %s: %v", configPath, err)
+		err = fmt.Errorf("解析配置文件 %s: %v 时出错", configPath, err)
 		return
 	}
 
@@ -105,12 +105,12 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 
 	for name, t := range config.Tunnels {
 		if t == nil || t.Protocols == nil || len(t.Protocols) == 0 {
-			err = fmt.Errorf("Tunnel %s does not specify any protocols to tunnel.", name)
+			err = fmt.Errorf("隧道 %s 未指定任何隧道协议.", name)
 			return
 		}
 
 		for k, addr := range t.Protocols {
-			tunnelName := fmt.Sprintf("for tunnel %s[%s]", name, k)
+			tunnelName := fmt.Sprintf("隧道 %s[%s]", name, k)
 			if t.Protocols[k], err = normalizeAddress(addr, tunnelName); err != nil {
 				return
 			}
@@ -170,7 +170,7 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 	// start tunnels
 	case "start":
 		if len(opts.args) == 0 {
-			err = fmt.Errorf("You must specify at least one tunnel to start")
+			err = fmt.Errorf("您必须至少指定一个隧道才能启动")
 			return
 		}
 
@@ -179,7 +179,7 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 			requestedTunnels[arg] = true
 
 			if _, ok := config.Tunnels[arg]; !ok {
-				err = fmt.Errorf("Requested to start tunnel %s which is not defined in the config file.", arg)
+				err = fmt.Errorf("请求启动的隧道 %s 未在配置文件中定义.", arg)
 				return
 			}
 		}
@@ -194,7 +194,7 @@ func LoadConfiguration(opts *Options) (config *Configuration, err error) {
 		return
 
 	default:
-		err = fmt.Errorf("Unknown command: %s", opts.command)
+		err = fmt.Errorf("未知的命令: %s", opts.command)
 		return
 	}
 
@@ -208,7 +208,7 @@ func defaultPath() string {
 	// it requires CGO; use os.Getenv("HOME") hack until we compile natively
 	homeDir := os.Getenv("HOME")
 	if err != nil {
-		log.Warn("Failed to get user's home directory: %s. Using $HOME: %s", err.Error(), homeDir)
+		log.Warn("无法获取用户的主目录: %s. Using $HOME: %s", err.Error(), homeDir)
 	} else {
 		homeDir = user.HomeDir
 	}
@@ -224,7 +224,7 @@ func normalizeAddress(addr string, propName string) (string, error) {
 
 	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
-		return "", fmt.Errorf("Invalid address %s '%s': %s", propName, addr, err.Error())
+		return "", fmt.Errorf("无效地址 %s '%s': %s", propName, addr, err.Error())
 	}
 
 	if host == "" {
@@ -238,7 +238,7 @@ func validateProtocol(proto, propName string) (err error) {
 	switch proto {
 	case "http", "https", "http+https", "tcp":
 	default:
-		err = fmt.Errorf("Invalid protocol for %s: %s", propName, proto)
+		err = fmt.Errorf("协议无效 %s: %s", propName, proto)
 	}
 
 	return
