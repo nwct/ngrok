@@ -187,7 +187,7 @@ func NewTunnel(m *msg.ReqTunnel, ctl *Control) (t *Tunnel, err error) {
 }
 
 func (t *Tunnel) Shutdown() {
-	t.Info("Shutting down")
+	t.Info("正在关闭")
 
 	// mark that we're shutting down
 	atomic.StoreInt32(&t.closing, 1)
@@ -217,7 +217,7 @@ func (t *Tunnel) listenTcp(listener *net.TCPListener) {
 	for {
 		defer func() {
 			if r := recover(); r != nil {
-				log.Warn("listenTcp failed with error %v", r)
+				log.Warn("侦听Tcp失败，出现错误 %v", r)
 			}
 		}()
 
@@ -230,13 +230,13 @@ func (t *Tunnel) listenTcp(listener *net.TCPListener) {
 				return
 			}
 
-			t.Error("Failed to accept new TCP connection: %v", err)
+			t.Error("无法接受新的TCP连接: %v", err)
 			continue
 		}
 
 		conn := conn.Wrap(tcpConn, "pub")
 		conn.AddLogPrefix(t.Id())
-		conn.Info("New connection from %v", conn.RemoteAddr())
+		conn.Info("新连接来自 %v", conn.RemoteAddr())
 
 		go t.HandlePublicConnection(conn)
 	}
@@ -246,7 +246,7 @@ func (t *Tunnel) HandlePublicConnection(publicConn conn.Conn) {
 	defer publicConn.Close()
 	defer func() {
 		if r := recover(); r != nil {
-			publicConn.Warn("HandlePublicConnection failed with error %v", r)
+			publicConn.Warn("处理公共连接失败，出现错误 %v", r)
 		}
 	}()
 
@@ -258,11 +258,11 @@ func (t *Tunnel) HandlePublicConnection(publicConn conn.Conn) {
 	for i := 0; i < (2 * proxyMaxPoolSize); i++ {
 		// get a proxy connection
 		if proxyConn, err = t.ctl.GetProxy(); err != nil {
-			t.Warn("Failed to get proxy connection: %v", err)
+			t.Warn("无法获取代理连接: %v", err)
 			return
 		}
 		defer proxyConn.Close()
-		t.Info("Got proxy connection %s", proxyConn.Id())
+		t.Info("获得代理连接 %s", proxyConn.Id())
 		proxyConn.AddLogPrefix(t.Id())
 
 		// tell the client we're going to start using this proxy connection
@@ -272,7 +272,7 @@ func (t *Tunnel) HandlePublicConnection(publicConn conn.Conn) {
 		}
 
 		if err = msg.WriteMsg(proxyConn, startPxyMsg); err != nil {
-			proxyConn.Warn("Failed to write StartProxyMessage: %v, attempt %d", err, i)
+			proxyConn.Warn("无法写入启动代理消息: %v, 尝试 %d", err, i)
 			proxyConn.Close()
 		} else {
 			// success
@@ -282,7 +282,7 @@ func (t *Tunnel) HandlePublicConnection(publicConn conn.Conn) {
 
 	if err != nil {
 		// give up
-		publicConn.Error("Too many failures starting proxy connection")
+		publicConn.Error("启动代理连接的故障太多")
 		return
 	}
 
