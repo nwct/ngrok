@@ -110,6 +110,8 @@ func (m *LocalMetrics) OpenTunnel(t *Tunnel) {
 		m.tcpTunnelMeter.Mark(1)
 	case "http":
 		m.httpTunnelMeter.Mark(1)
+	case "https":
+		m.httpsTunnelMeter.Mark(1)
 	}
 }
 
@@ -136,6 +138,7 @@ func (m *LocalMetrics) Report() {
 			"osx":                   m.osxCounter.Count(),
 			"other":                 m.otherCounter.Count(),
 			"httpTunnelMeter.count": m.httpTunnelMeter.Count(),
+			"httpsTunnelMeter.count": m.httpsTunnelMeter.Count(),
 			"tcpTunnelMeter.count":  m.tcpTunnelMeter.Count(),
 			"tunnelMeter.count":     m.tunnelMeter.Count(),
 			"tunnelMeter.m1":        m.tunnelMeter.Rate1(),
@@ -178,7 +181,7 @@ func NewKeenIoMetrics(batchInterval time.Duration) *KeenIoMetrics {
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
-				k.Error("KeenIoMetrics failed: %v", r)
+				k.Error("KeenIo指标失败: %v", r)
 			}
 		}()
 
@@ -205,7 +208,7 @@ func NewKeenIoMetrics(batchInterval time.Duration) *KeenIoMetrics {
 					k.Error("无法序列化指标有效内容: %v, %v", batch, err)
 				} else {
 					for key, val := range batch {
-						k.Debug("Reporting %d metrics for %s", len(val), key)
+						k.Debug("报告  %s 的 %d 指标", len(val), key)
 					}
 
 					k.AuthedRequest("POST", "/events", bytes.NewReader(payload))
@@ -236,13 +239,13 @@ func (k *KeenIoMetrics) AuthedRequest(method, path string, body *bytes.Reader) (
 	resp, err = k.HttpClient.Do(req)
 
 	if err != nil {
-		k.Error("Failed to send metric event to keen.io %v", err)
+		k.Error("无法将指标事件发送到 keen.io %v", err)
 	} else {
-		k.Info("keen.io processed request in %f sec", time.Since(requestStartAt).Seconds())
+		k.Info("keen.io 处理的请求 %f 秒", time.Since(requestStartAt).Seconds())
 		defer resp.Body.Close()
 		if resp.StatusCode != 200 {
 			bytes, _ := ioutil.ReadAll(resp.Body)
-			k.Error("Got %v response from keen.io: %s", resp.StatusCode, bytes)
+			k.Error("获得 %v 响应， 从 keen.io: %s", resp.StatusCode, bytes)
 		}
 	}
 
