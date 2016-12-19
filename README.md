@@ -5,6 +5,10 @@
 客户端为：ngrok</br>
 启动方式1：ngrok 80</br>
 启动方式2：ngrok  start-all</br></br>
+客户端配置文件：</br></br>
+1、新建一个txt文本文件，输入：server_addr: "www.gdmpmiu.tk:4443" 后保存，并将文件名改为：ngrok.cfg</br></br>
+2、ngrok.cfg 与ngrok客户端 放在同一目录下。</br></br>
+
 服务端为：ngrokd</br>
 启动方式：ngrokd -domain="gdmpmiu.tk"</br></br>
 以上启动命令均是在cmd模式下运行。</br></br>
