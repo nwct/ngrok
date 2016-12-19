@@ -161,7 +161,7 @@ func NewTunnel(m *msg.ReqTunnel, ctl *Control) (t *Tunnel, err error) {
 	case "http", "https":
 		l, ok := listeners[proto]
 		if !ok {
-			err = fmt.Errorf("Not listening for %s connections", proto)
+			err = fmt.Errorf("不侦听 %s 连接", proto)
 			return
 		}
 
@@ -170,7 +170,7 @@ func NewTunnel(m *msg.ReqTunnel, ctl *Control) (t *Tunnel, err error) {
 		}
 
 	default:
-		err = fmt.Errorf("Protocol %s is not supported", proto)
+		err = fmt.Errorf("协议 %s 不支持", proto)
 		return
 	}
 
