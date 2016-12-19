@@ -106,10 +106,10 @@ func (r *TunnelRegistry) GetCachedRegistration(t *Tunnel) (url string) {
 	// not be specific to a user because of NATs
 	if v, ok := r.affinity.Get(idCacheKey); ok {
 		url = string(v.(cacheUrl))
-		t.Debug("Found registry affinity %s for %s", url, idCacheKey)
+		t.Debug("找到注册表关联性 %s 为 %s", url, idCacheKey)
 	} else if v, ok := r.affinity.Get(ipCacheKey); ok {
 		url = string(v.(cacheUrl))
-		t.Debug("Found registry affinity %s for %s", url, ipCacheKey)
+		t.Debug("找到注册表关联性 %s 为 %s", url, ipCacheKey)
 	}
 	return
 }
