@@ -1,4 +1,4 @@
-#备份并做了部分修改与汉化工作
+#备份并做了部分优化修改与汉化工作
 
 ###已经编译好的客户端及服务端下载地址：</br>https://github.com/chengangwin/ngrok/releases
 
