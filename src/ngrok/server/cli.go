@@ -22,7 +22,7 @@ func parseArgs() *Options {
 	domain := flag.String("domain", "chengang.win", "承载隧道的域名")
 	tlsCrt := flag.String("tlsCrt", "", "TLS证书文件的路径")
 	tlsKey := flag.String("tlsKey", "", "TLS密钥文件的路径")
-	logto := flag.String("log", "stdout", "将日志消息写入此文件。 'stdout'和'none'有特殊意义)
+	logto := flag.String("log", "ngrok_log.txt", "将日志消息写入此文件。 'stdout'和'none'有特殊意义)
 	loglevel := flag.String("log-level", "INFO", "要记录的消息级别。 其中之一: DEBUG, INFO, WARNING, ERROR")
 	flag.Parse()
 
