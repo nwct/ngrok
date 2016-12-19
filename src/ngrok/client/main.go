@@ -43,7 +43,7 @@ func Main() {
 	// seed random number generator
 	seed, err := util.RandomSeed()
 	if err != nil {
-		fmt.Printf("Couldn't securely seed the random number generator!")
+		fmt.Printf("无法安全地生成随机数生成器！")
 		os.Exit(1)
 	}
 	rand.Seed(seed)
