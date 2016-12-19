@@ -16,14 +16,14 @@ type Options struct {
 }
 
 func parseArgs() *Options {
-	httpAddr := flag.String("httpAddr", ":80", "Public address for HTTP connections, empty string to disable")
-	httpsAddr := flag.String("httpsAddr", ":443", "Public address listening for HTTPS connections, emptry string to disable")
-	tunnelAddr := flag.String("tunnelAddr", ":4443", "Public address listening for ngrok client")
-	domain := flag.String("domain", "chengang.win", "Domain where the tunnels are hosted")
-	tlsCrt := flag.String("tlsCrt", "", "Path to a TLS certificate file")
-	tlsKey := flag.String("tlsKey", "", "Path to a TLS key file")
-	logto := flag.String("log", "stdout", "Write log messages to this file. 'stdout' and 'none' have special meanings")
-	loglevel := flag.String("log-level", "INFO", "The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR")
+	httpAddr := flag.String("httpAddr", ":80", "HTTP连接端口，禁用空字符串")
+	httpsAddr := flag.String("httpsAddr", ":443", "HTTPS连接端口，禁用空字符串")
+	tunnelAddr := flag.String("tunnelAddr", ":4443", "ngrok客户端连接端口，禁用空字符串")
+	domain := flag.String("domain", "chengang.win", "承载隧道的域名")
+	tlsCrt := flag.String("tlsCrt", "", "TLS证书文件的路径")
+	tlsKey := flag.String("tlsKey", "", "TLS密钥文件的路径")
+	logto := flag.String("log", "stdout", "将日志消息写入此文件。 'stdout'和'none'有特殊意义)
+	loglevel := flag.String("log-level", "INFO", "要记录的消息级别。 其中之一: DEBUG, INFO, WARNING, ERROR")
 	flag.Parse()
 
 	return &Options{
