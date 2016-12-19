@@ -255,7 +255,7 @@ func (c *Control) reader() {
 func (c *Control) stopper() {
 	defer func() {
 		if r := recover(); r != nil {
-			c.conn.Error("Failed to shut down control: %v", r)
+			c.conn.Error("无法关闭控制: %v", r)
 		}
 	}()
 
@@ -288,7 +288,7 @@ func (c *Control) stopper() {
 	}
 
 	c.shutdown.Complete()
-	c.conn.Info("Shutdown complete")
+	c.conn.Info("关闭完成")
 }
 
 func (c *Control) RegisterProxy(conn conn.Conn) {
@@ -297,9 +297,9 @@ func (c *Control) RegisterProxy(conn conn.Conn) {
 	conn.SetDeadline(time.Now().Add(proxyStaleDuration))
 	select {
 	case c.proxies <- conn:
-		conn.Info("Registered")
+		conn.Info("已注册")
 	default:
-		conn.Info("Proxies buffer is full, discarding.")
+		conn.Info("代理缓冲区已满，丢弃。")
 		conn.Close()
 	}
 }
@@ -316,12 +316,12 @@ func (c *Control) GetProxy() (proxyConn conn.Conn, err error) {
 	select {
 	case proxyConn, ok = <-c.proxies:
 		if !ok {
-			err = fmt.Errorf("No proxy connections available, control is closing")
+			err = fmt.Errorf("没有可用的代理连接，控制正在关闭")
 			return
 		}
 	default:
 		// no proxy available in the pool, ask for one over the control channel
-		c.conn.Debug("No proxy in pool, requesting proxy from control . . .")
+		c.conn.Debug("池中没有代理，正在请求代理控制 . . .")
 		if err = util.PanicToError(func() { c.out <- &msg.ReqProxy{} }); err != nil {
 			return
 		}
@@ -329,12 +329,12 @@ func (c *Control) GetProxy() (proxyConn conn.Conn, err error) {
 		select {
 		case proxyConn, ok = <-c.proxies:
 			if !ok {
-				err = fmt.Errorf("No proxy connections available, control is closing")
+				err = fmt.Errorf("没有可用的代理连接，控制正在关闭")
 				return
 			}
 
 		case <-time.After(pingTimeoutInterval):
-			err = fmt.Errorf("Timeout trying to get proxy connection")
+			err = fmt.Errorf("尝试获取代理连接时超时")
 			return
 		}
 	}
@@ -345,7 +345,7 @@ func (c *Control) GetProxy() (proxyConn conn.Conn, err error) {
 // this can happen if the network drops out and the client reconnects
 // before the old tunnel has lost its heartbeat
 func (c *Control) Replaced(replacement *Control) {
-	c.conn.Info("Replaced by control: %s", replacement.conn.Id())
+	c.conn.Info("替换为控制: %s", replacement.conn.Id())
 
 	// set the control id to empty string so that when stopper()
 	// calls registry.Del it won't delete the replacement
