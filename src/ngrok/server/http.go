@@ -22,7 +22,7 @@ Authorization required
 	NotFound = `HTTP/1.0 404 Not Found
 Content-Length: %d
 
-隧道 %s 没有找到
+Tunnel %s not found
 `
 
 	BadRequest = `HTTP/1.0 400 Bad Request
