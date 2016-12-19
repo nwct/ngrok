@@ -61,7 +61,7 @@ func httpHandler(c conn.Conn, proto string) {
 	defer func() {
 		// recover from failures
 		if r := recover(); r != nil {
-			c.Warn("httpHandler failed with error %v", r)
+			c.Warn("http处理失败，出现错误 %v", r)
 		}
 	}()
 
@@ -71,7 +71,7 @@ func httpHandler(c conn.Conn, proto string) {
 	// multiplex by extracting the Host header, the vhost library
 	vhostConn, err := vhost.HTTP(c)
 	if err != nil {
-		c.Warn("Failed to read valid %s request: %v", proto, err)
+		c.Warn("无法读取有效的 %s 请求: %v", proto, err)
 		c.Write([]byte(BadRequest))
 		return
 	}
@@ -87,10 +87,10 @@ func httpHandler(c conn.Conn, proto string) {
 	c = conn.Wrap(vhostConn, "pub")
 
 	// multiplex to find the right backend host
-	c.Debug("Found hostname %s in request", host)
+	c.Debug("在请求中找到hostname %s ", host)
 	tunnel := tunnelRegistry.Get(fmt.Sprintf("%s://%s", proto, host))
 	if tunnel == nil {
-		c.Info("No tunnel found for hostname %s", host)
+		c.Info("找不到 hostname %s 的隧道", host)
 		c.Write([]byte(fmt.Sprintf(NotFound, len(host)+18, host)))
 		return
 	}
@@ -99,7 +99,7 @@ func httpHandler(c conn.Conn, proto string) {
 	// then fail the request with 401 Not Authorized and request the client reissue the
 	// request with basic authdeny the request
 	if tunnel.req.HttpAuth != "" && auth != tunnel.req.HttpAuth {
-		c.Info("Authentication failed: %s", auth)
+		c.Info("验证失败: %s", auth)
 		c.Write([]byte(NotAuthorized))
 		return
 	}
